@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentTourGuide.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220817204026_Initial")]
+    [Migration("20220818111613_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

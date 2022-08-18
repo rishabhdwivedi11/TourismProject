@@ -32,15 +32,7 @@ namespace IntelligentTourGuide.Web
             });
             services.AddRazorPages();
 
-            services.AddSwaggerGen(config =>
-            {
-                config.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Intelligent Guide",
-                    Description = "Intelligent tour guide - API version 1"
-                });
-            });
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,14 +41,8 @@ namespace IntelligentTourGuide.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-
-                // Add the Swagger Documentation Generation Middleware
-                app.UseSwaggerUI(config =>
-                {
-                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "Intelligent Guide API v1");
-                });
             }
+
             else
             {
                 app.UseExceptionHandler("/Error");
