@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IntelligentTourGuide.Web.Data;
 using IntelligentTourGuide.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class StatesController : Controller
     {
         private readonly ApplicationDbContext _context;

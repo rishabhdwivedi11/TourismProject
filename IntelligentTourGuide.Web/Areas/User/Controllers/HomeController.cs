@@ -1,5 +1,6 @@
 ﻿using IntelligentTourGuide.Web.Areas.User.ViewModels;
 using IntelligentTourGuide.Web.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace IntelligentTourGuide.Web.Areas.User.Controllers
 {
     [Area("User")]
+    [Authorize]
     public class HomeController : Controller
     {
 
