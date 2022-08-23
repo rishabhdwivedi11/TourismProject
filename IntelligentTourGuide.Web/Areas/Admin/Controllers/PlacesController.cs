@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using IntelligentTourGuide.Web.Data;
 using IntelligentTourGuide.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
 {
@@ -16,10 +17,12 @@ namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
     public class PlacesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<PlacesController> _logger;
 
-        public PlacesController(ApplicationDbContext context)
+        public PlacesController(ApplicationDbContext context, ILogger<PlacesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Admin/Places

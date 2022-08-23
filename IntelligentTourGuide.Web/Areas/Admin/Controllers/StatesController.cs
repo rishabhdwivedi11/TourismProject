@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using IntelligentTourGuide.Web.Data;
 using IntelligentTourGuide.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
 {
@@ -16,10 +17,12 @@ namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
     public class StatesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<StatesController> _logger;
 
-        public StatesController(ApplicationDbContext context)
+        public StatesController(ApplicationDbContext context, ILogger<StatesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Admin/States
@@ -61,9 +64,21 @@ namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(state);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                state.StateName = state.StateName.Trim();
+
+                // Check for Duplicate CategoryName
+                bool isDuplicateFound
+                    = _context.States.Any(c => c.StateName == state.StateName);
+                if (isDuplicateFound)
+                {
+                    ModelState.AddModelError("StateName", "Duplicate! Another state with same name exists");
+                }
+                else
+                {
+                    _context.Add(state);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(state);
         }
@@ -89,34 +104,47 @@ namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("StateId,StateName")] State state)
+        public async Task<IActionResult> Edit(short id, [Bind("StateId,StateName")] State stateInputModel)
         {
-            if (id != state.StateId)
+            if (id != stateInputModel.StateId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+
+                stateInputModel.StateName = stateInputModel.StateName.Trim();
+
+                // Check for duplicate Category
+                bool isDuplicateFound
+                    = _context.States.Any(c => c.StateName == stateInputModel.StateName
+                                                   && c.StateId != stateInputModel.StateId);
+                if (isDuplicateFound)
                 {
-                    _context.Update(state);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("StateName", "A Duplicate State was found!");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!StateExists(state.StateId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(stateInputModel);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!StateExists(stateInputModel.StateId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(state);
+            return View(stateInputModel);
         }
 
         // GET: Admin/States/Delete/5

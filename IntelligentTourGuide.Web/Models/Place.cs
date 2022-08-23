@@ -27,10 +27,11 @@ namespace IntelligentTourGuide.Web.Models
 
         [Required]
         [DefaultValue(true)]
-        [Display(Name = "Is enabled?")]
+        [Display(Name = "Top Rated?")]
         public bool IsEnabled { get; set; } = true;
 
         [Required]
+        [Display(Name = "Glimpse of Place")]
         public string ImageUrl { get; set; } = null;
 
         #region Navigation Properties for State Model
