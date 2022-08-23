@@ -15,10 +15,12 @@ namespace IntelligentTourGuide.Web.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(
+             // IEmailSender sender,
+             UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
-            _sender = sender;
+           // _sender = sender;
         }
 
         public string Email { get; set; }

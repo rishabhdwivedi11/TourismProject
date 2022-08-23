@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace IntelligentTourGuide.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "AppAdmin")]
     public class PlacesController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -31,14 +31,36 @@ namespace IntelligentTourGuide.Web
             {
                 options.UseSqlServer(Configuration.GetConnectionString("MyDefaultConnectionString"));
             });
+
+          
             // Register the OWIN Identity Middleware
             // to use the default IdentityUser and IdentityRole profiles
             // and store the data in the ApplicationDbContext
             services
-                .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddRazorPages();
+            services
+               .AddRazorPages()
+               .AddRazorPagesOptions(options =>
+               {
+                   options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                   options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+               });
+
+            // Configure the Application Cookie options
+            services
+                .ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = "/Identity/Account/Login";
+                    options.LogoutPath = "/Identity/Account/Logout";
+                    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);      // Default Session Cookie expiry is 20 minutes
+                    options.SlidingExpiration = true;
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.Name = "ITGAppAppCookie";
+                });
 
             services.AddMvc();
 
@@ -56,7 +78,8 @@ namespace IntelligentTourGuide.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager,
+            UserManager<IdentityUser> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -95,6 +118,9 @@ namespace IntelligentTourGuide.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            ApplicationDbContextSeed.SeedIdentityRolesAsync(roleManager).Wait();
+            ApplicationDbContextSeed.SeedIdentityUserAsync(userManager).Wait();
         }
     }
 }

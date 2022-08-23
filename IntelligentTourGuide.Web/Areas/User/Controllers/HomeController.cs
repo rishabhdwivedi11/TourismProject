@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace IntelligentTourGuide.Web.Areas.User.Controllers
 {
     [Area("User")]
-    [Authorize]
+    [Authorize(Roles = "AppUser")]
     public class HomeController : Controller
     {
 
