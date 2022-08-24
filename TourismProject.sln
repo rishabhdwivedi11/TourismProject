@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32802.440
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelligentTourGuide.Web", "IntelligentTourGuide.Web\IntelligentTourGuide.Web.csproj", "{C1A8C720-FA5D-418D-8361-D6933D12CB0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGuideUnitTest", "MyGuideUnitTest\MyGuideUnitTest.csproj", "{A393BC27-E637-4188-8A74-82767374CF25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGuideUnitTest", "MyGuideUnitTest\MyGuideUnitTest.csproj", "{A393BC27-E637-4188-8A74-82767374CF25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

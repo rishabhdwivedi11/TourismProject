@@ -47,9 +47,6 @@ namespace IntelligentTourGuide.Web.Areas.User.Controllers
             return View("Index", model);
         }
 
-        public IActionResult Details(int? id)
-        {
-            return RedirectToAction("Index");
-        }
+       
     }
 }
